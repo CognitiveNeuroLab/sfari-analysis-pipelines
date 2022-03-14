@@ -18,8 +18,9 @@ This is a project in which we will collect data from children 8-12 on the spectr
 
 
 ## ASSR
-[Click here to see the readme file with the paradigm information](https://github.com/CognitiveNeuroLab/ASSR). 
-[Click here to see the readme file with the pipeline explained](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/ASSR.md)
+[Click here to see the readme file with the paradigm information](https://github.com/CognitiveNeuroLab/ASSR).  
+[Click here to see the readme file with the pipeline explained](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/ASSR.md)  
+
 
 ## The rest will follow
 
