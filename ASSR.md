@@ -16,7 +16,7 @@ This is a project in which we will collect data from children 8-12 on the spectr
 3. [C_manual_check](#c_manual_check)
 4. [D_reref_exclextrn_interp_avgref_ica_autoexcom](#d_reref_exclextrn_interp_avgref_ica_autoexcom)
 5. [E_epoching_ASSR](#e_epoching_ASSR)
-6. [F_all_analysis](#f_all_analysis)  
+6. [F_all_analysis_assr](#f_all_analysis_assr)  
     - [Frequency spectrum](#frequency-spectrum)
     - [Time Frequency](#time-frequency)
 7. [H_Gamma_preprocess](#H_Gamma_preprocess)
@@ -46,7 +46,7 @@ We delete components if the eye components contain over 80% eye and less then 10
 We epoch the data -100 800 with a baseline from -100 to 0. After this we delete all the epochs that have 120uV. 
 This also will show us how many trials everyone has left. This should dictate how many trials you want to use for the next script.  
   
-## F_all_analysis  
+## F_all_analysis_assr  
   
 We use 270 randomly selected trials for both standard streams (27hz and 40hz). After that we do 3 main analysis 
 
@@ -81,5 +81,5 @@ We run the same pipeline again, but this time we have some changes in the settin
 - We do not downsample  
 - we delete ICA components if they have more than 60% eye and less than 10% brain
 
-## Run the F_all_analysis script again  
+## Run the F_all_analysis_assr script again  
 We run this again to get the results with the correct data.  
