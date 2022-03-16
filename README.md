@@ -11,7 +11,7 @@ This is a project in which we will collect data from children 8-12 on the spectr
   
 1. [ASSR](#assr)
 2. [Beep Flash](#beep-flash)
-3. [F.A.S.T. Response task](#f.a.s.t-response-task)
+3. [F.A.S.T. Response Task](#f.a.s.t-response-task)
 4. [Illusory Contours](#illusory-contours)
 5. [Optical Flow (MObI)](#optical-flow-(mobi))
 6. [Restingstate](#resting-state)
@@ -20,6 +20,10 @@ This is a project in which we will collect data from children 8-12 on the spectr
 ## ASSR
 [Click here to see the readme file with the paradigm information](https://github.com/CognitiveNeuroLab/ASSR).  
 [Click here to see the readme file with the pipeline explained](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/ASSR.md)  
+  
+## F.A.S.T. Response Task  
+[Click here to see the readme file with the paradigm information](https://github.com/CognitiveNeuroLab/F.A.S.T.-response-experiment).  
+[Click here to see the readme file with the pipeline explained](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/ASSR.md)
 
 
 ## The rest will follow
