@@ -19,6 +19,7 @@ This is a project in which we will collect data from children 8-12 on the spectr
 6. [F_all_analysis_fast](#f_all_analysis_fast)  
     - [Frequency spectrum](#frequency-spectrum)
     - [Time Frequency](#time-frequency)
+7. [results](#results)
 
 
 ## A_merge_sets
@@ -73,5 +74,37 @@ We plot the conditions by themselves and we compare the condtions, but for this 
 ### ERP  
   
 We use the EEGLAB study to plot averages, of all the conditions for multiple channels.   
+
+## Results  
+  
+We are expecting a difference in alpha and theta. We are also expecting a more positive P1 amplitude to faces compared to objects, and a difference in P1 between faces (that should not be there when we have an ASD group). We also expect the N170 to be more negative in amplitude and faster in latency for Faces vs objects and also to be more negative and slower between for inverted faces compared to upright faces.
+
+### ERPs  
+  
+![ERPs](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERPs_fast.jpg)  
+  
+### Power spectrum
+  
+![Power spectrum](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/Pwelch_fast.png)  
+  
+### Time Frequency  
+  
+In this case we can only correct for multiple comparisons when plotting one condition. So the first 4 plots have the correction. The last 2, comparing conditions, do not.  
+  
+![Face normal](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_nrm_oz.png)  
+  
+![Face up-side-down](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_upsdwn_oz.png)  
+  
+![Object normal](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_nrm_oz.png)  
+  
+![Object up-side-down](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_upsdwn_oz.png)  
+  
+![Comparing faces](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_oz.png)  
+  
+![Comparing objects](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_oz.png)  
+  
+![Comparing face vs objects (both right-side-up)](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_obj_oz.png)
+
+
   
   
