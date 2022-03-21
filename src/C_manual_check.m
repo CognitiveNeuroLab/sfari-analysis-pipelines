@@ -2,9 +2,9 @@
 % Created by Douwe Horsthuis last update 3/1/2022
 % ------------------------------------------------
 eeglab
-subject_list = {'12377' '12494' '12565' '12666' '12675'};
+subject_list = {'12377' '12494' '12565'  '12675'};
 home_path  = {'D:\OpticalFlow_sfari\' 'D:\ASSR_oddball\' 'D:\Beep-Flash_sfari\' 'D:\F.A.S.T. Response task\' 'D:\IllusoryContours_sfari\' 'D:\Restingstate_eyetracking\' };
-for paradigm=2%1:length(home_path)
+for paradigm=5%1:length(home_path)
 for s=1:length(subject_list)
     clear bad_chan;
     fprintf('\n******\nProcessing subject %s\n******\n\n', subject_list{s});

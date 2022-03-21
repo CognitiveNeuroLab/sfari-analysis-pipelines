@@ -31,7 +31,7 @@ highpass_filter_hz=1; %1hz filter
 
 %% looping through all paradigms
 for paradigm=1%1:length(home_path)
-    load([home_path{paradigm} paradigm_name{paradigm} '_participant_interpolation_info.mat'])
+    %load([home_path{paradigm} paradigm_name{paradigm} '_participant_interpolation_info.mat'])
     % Loop through all subjects
     for s=1:length(subject_list)
         if paradigm==2 && strcmp(subject_list{s},'12666') %illusionary contours
