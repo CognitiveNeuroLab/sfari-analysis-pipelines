@@ -53,7 +53,10 @@ We use 270 randomly selected trials for both standard streams (27hz and 40hz). A
 ### Frequency spectrum  
   
 For this analysis we use matlab's pwelch function, slightly adapted by [Shlomit Beker](https://github.com/Shlomit-Beker).  
-We use all the standard settings except that we set the sampling rate to that of the data (256) and we only go up to 50hz. After that we plot a logtransfomation of the data.
+We use all the standard settings except that we set the sampling rate to that of the data (256) and we only go up to 50hz. After that we plot a logtransfomation of the data.  
+  
+![Power Spectrum](https://github.com/CognitiveNeuroLab/ASSR-oddball/blob/main/images/Power_spectrum.jpg)  
+The lighter one is the 40hz stream the darker one is the 27Hz.    
   
 ### Time Frequency
   
@@ -67,12 +70,17 @@ alpha: 0.05
 commonbase: on
 mcorrect: using FDR to correct for multiple comparisons
 pcontour: on ,puts a contour around the plot for what is significant  
+  
+![Time Frequency analysis 27hz](https://github.com/CognitiveNeuroLab/ASSR-oddball/blob/main/images/Time_freq_27.jpg) ![Time Frequency analysis 40hz](https://github.com/CognitiveNeuroLab/ASSR-oddball/blob/main/images/Time_freq_40.jpg)  
+Showing the same pattern where the 40hz stream is clear and the 27hz is not as much.    
 
 ### ERP  
   
 To assess the strength of evoked activity we first have to filter more. For the 27hz stream we use a 22hz highpass and a 32hz lowpass. For the 40hz stream we do a 35hz highpass and a 45hz lowpass. 
 
-After that we use the EEGLAB study to plot averages.  
+After that we use the EEGLAB study to plot averages. 
+ 
+![evoked reponse](https://github.com/CognitiveNeuroLab/ASSR-oddball/blob/main/images/ERP_cz.png)   
   
 ## H_Gamma_preprocess  
   

@@ -21,7 +21,8 @@ This is a project in which we will collect data from children 8-12 on the spectr
     - [Time Frequency](#time-frequency)
 7. [results](#results)
 
-
+#under construction
+<!--
 ## A_merge_sets
 This script simply takes the .bdf files and creates .set files (EEGlab structure).  
   
