@@ -1,0 +1,31 @@
+bin 1
+Auditory Hit
+.{62;22;32;23;33}{255}
+
+bin 2
+Visual Hit
+.{72;42;52;43;53}{255}
+
+bin 3
+Auditory FA all
+.{60;21;31;20;30}{255}
+
+bin 4
+Visual FA all
+.{70;41;51;40;50}{255}
+
+bin 5
+Auditory Miss
+.{62;22;32;23;33}{16;17;15}
+
+bin 6 
+Visual Miss
+.{72;42;52;43;53}{16;17;15}
+
+bin 7
+Auditory CR
+.{60;21;31;20;30}{16;17;15}
+
+bin 8
+Visual CR
+.{70;41;51;40;50}{16;17;15}
