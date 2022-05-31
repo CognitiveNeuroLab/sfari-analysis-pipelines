@@ -12,25 +12,20 @@ This is a project in which we will collect data from children 8-12 on the spectr
 **scripts**
   
 1. [A_merge_sets](#a_merge_sets)
-2. [B_behavioral_bf](b_behavioral_bf)
+
 2. [B_downs_filter_chaninfo_exclchan](#b_downs_filter_chaninfo_exclchan)
 3. [C_manual_check](#c_manual_check)
 4. [D_reref_exclextrn_interp_avgref_ica_autoexcom](#d_reref_exclextrn_interp_avgref_ica_autoexcom)
 5. [E_epoching_fast](#e_epoching_fast)
 6. [F_all_analysis_fast](#f_all_analysis_fast)  
     - [Frequency spectrum](#frequency-spectrum)
-    - [Time Frequency](#time-frequency)
-7. [results](#results)
+    - [Time Frequency](#time-frequency) 
+7. [I_behavioral_bf](#b_behavioral_bf) 
+8. [results](#results)
 
 
 ## A_merge_sets
 This script simply takes the .bdf files and creates .set files (EEGlab structure). 
-
-## B_behavioral_bf  
-This is unique for this paradigm this is why there are 2 B scripts. 
-It should be ran early on, because you would want to know how people did to see if you can include them in your study. 
-This script takes the logfiles from the UDTR and from the real paradigm and looks at how they did and plots it. After that it looks at the BDF file, `ID#.set'. This file should be created after script `A_merge_sets`.  
-This will plot the progression of UDTR scores, to see how the participant did across the UDTR. It will plot the accuracy per block. But to focus better on types of False alarms, it looks at the BDF file, uses the `binlist_bf_behv_2.txt` `binlist_bf_behv_3.txt` and `binlist_bf_behv_4.txt` to create bins and see what type of responses there where (Hit/Miss/False Alarm(FA)/Correct Rejection (CR)). After that it use a different binlist to look more into what type of FA happened. This should give a good indication of the preformance of the participant.
   
 ## B_downs_filter_chaninfo_exclchan  
   
@@ -58,4 +53,10 @@ This also will show us how many trials everyone has left. This should dictate ho
 ## F_all_analysis  
   
 The previous script should create a variable that shows how many trials there are for each Bin (type of epoch). The lowest number can be used to make sure everyone has equal amount of trials. This can be changed in line 18. This will mean that for every participant that has more trials than the selected amount, a random sub-set will be chosen to work with from here.  
+
+## I_behavioral_bf  
+This is unique for this paradigm this is why there are 2 B scripts. 
+It should be ran early on, because you would want to know how people did to see if you can include them in your study. 
+This script takes the logfiles from the UDTR and from the real paradigm and looks at how they did and plots it. After that it looks at the BDF file, `ID#.set'. This file should be created after script `A_merge_sets`.  
+This will plot the progression of UDTR scores, to see how the participant did across the UDTR. It will plot the accuracy per block. But to focus better on types of False alarms, it looks at the BDF file, uses the `binlist_bf_behv_2.txt` `binlist_bf_behv_3.txt` and `binlist_bf_behv_4.txt` to create bins and see what type of responses there where (Hit/Miss/False Alarm(FA)/Correct Rejection (CR)). After that it use a different binlist to look more into what type of FA happened. This should give a good indication of the preformance of the participant.
 
