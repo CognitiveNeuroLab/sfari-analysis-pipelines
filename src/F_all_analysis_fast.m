@@ -72,11 +72,12 @@ for i=1:length(channels) %pwelch on several channels, can probably be done easie
         power_obj_nrm_log_all(:,:,s)=10*log10(power_obj_norm);
         power_face_upsdwn_log_all(:,:,s)=10*log10(power_face_upsdwn);
         power_face_nrm_log_all(:,:,s)=10*log10(power_face_norm);
-        concat_obj_upsdwn = cat(3, concat_obj_upsdwn, EEG_object_upsidedown.data);%data for newtimef function (time freq)
-        concat_obj_nrm = cat(3, concat_obj_nrm, EEG_object_norm.data); %data for newtimef function (time freq)
-        concat_face_upsdwn = cat(3, concat_face_upsdwn, EEG_face_upsidedown.data);%data for newtimef function (time freq)
-        concat_face_nrm = cat(3, concat_face_nrm, EEG_face_norm.data); %data for newtimef function (time freq)
-        
+        if i==1 %only need to do this 1x for each participant
+            concat_obj_upsdwn = cat(3, concat_obj_upsdwn, EEG_object_upsidedown.data);%data for newtimef function (time freq)
+            concat_obj_nrm = cat(3, concat_obj_nrm, EEG_object_norm.data); %data for newtimef function (time freq)
+            concat_face_upsdwn = cat(3, concat_face_upsdwn, EEG_face_upsidedown.data);%data for newtimef function (time freq)
+            concat_face_nrm = cat(3, concat_face_nrm, EEG_face_norm.data); %data for newtimef function (time freq)
+        end
     end
     
     %% averaging the log of the power, so we can plot it
@@ -280,20 +281,20 @@ eeglab redraw % This is to update EEGLAB GUI so that you can build STUDY from GU
 STUDY = pop_erpparams(STUDY, 'plotconditions','together');
 
 for i=1:length(channel_name) %is the amount of channels we want
-STUDY = std_erpplot(STUDY,ALLEEG,'channels',{channel_name{i}}, 'design', 1);
-set(gcf, 'Position',  [100, 100, 2000, 2000])
-print([home_path 'ERP_' channel_name{i}], '-dpng' ,'-r300');
-savefig([home_path 'ERP_' channel_name{i}])
-close all
+    STUDY = std_erpplot(STUDY,ALLEEG,'channels',{channel_name{i}}, 'design', 1);
+    set(gcf, 'Position',  [100, 100, 2000, 2000])
+    print([home_path 'ERP_' channel_name{i}], '-dpng' ,'-r300');
+    savefig([home_path 'ERP_' channel_name{i}])
+    close all
 end
 s1=figure('units','normalized','outerposition',[0 0 1 1]);
-for i=1:length(channel_name) 
-s1=subplot(3,3,i);
-title(channel_name{i})
-fig=openfig([home_path 'ERP_' channel_name{i} '.fig']);
-ax1 = gca;
-fig1 = get(ax1,'children'); %get handle to all the children in the figure
-copyobj(fig1,s1);%adding them together
-close 2%need to close the loaded figure or it will mess up the rest
+for i=1:length(channel_name)
+    s1=subplot(3,3,i);
+    title(channel_name{i})
+    fig=openfig([home_path 'ERP_' channel_name{i} '.fig']);
+    ax1 = gca;
+    fig1 = get(ax1,'children'); %get handle to all the children in the figure
+    copyobj(fig1,s1);%adding them together
+    close 2%need to close the loaded figure or it will mess up the rest
 end
 leg = legend('Face normal', 'Face up-side-down', 'Object normal', 'Object up-side-down', 'Orientation','horizontal', 'Location', 'south');

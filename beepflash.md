@@ -7,11 +7,12 @@ pipelines to do the frequency analyses for all the SFARI project's paradigms (pr
 # Sfari Project
 This is a project in which we will collect data from children 8-12 on the spectrum, siblings of people on the spectrum and controls. They will do several paradigms that we will analyse together. 
 
-# Illusory Contours pipeline explained
+# Beep-Flash pipeline explained
 
 **scripts**
   
 1. [A_merge_sets](#a_merge_sets)
+2. [B_behavioral_bf](b_behavioral_bf)
 2. [B_downs_filter_chaninfo_exclchan](#b_downs_filter_chaninfo_exclchan)
 3. [C_manual_check](#c_manual_check)
 4. [D_reref_exclextrn_interp_avgref_ica_autoexcom](#d_reref_exclextrn_interp_avgref_ica_autoexcom)
@@ -20,18 +21,24 @@ This is a project in which we will collect data from children 8-12 on the spectr
     - [Frequency spectrum](#frequency-spectrum)
     - [Time Frequency](#time-frequency)
 7. [results](#results)
-# under construction
-<!--
+
+
 ## A_merge_sets
-This script simply takes the .bdf files and creates .set files (EEGlab structure).  
-  
+This script simply takes the .bdf files and creates .set files (EEGlab structure). 
+
+## B_behavioral_bf  
+This is unique for this paradigm this is why there are 2 B scripts. 
+It should be ran early on, because you would want to know how people did to see if you can include them in your study. 
+This script takes the logfiles from the UDTR and from the real paradigm and looks at how they did and plots it. After that it looks at the BDF file, `ID#.set'. This file should be created after script `A_merge_sets`.  
+This will plot the progression of UDTR scores, to see how the participant did across the UDTR. It will plot the accuracy per block. But to focus better on types of False alarms, it looks at the BDF file, uses the `binlist_bf_behv_2.txt` `binlist_bf_behv_3.txt` and `binlist_bf_behv_4.txt` to create bins and see what type of responses there where (Hit/Miss/False Alarm(FA)/Correct Rejection (CR)). After that it use a different binlist to look more into what type of FA happened. This should give a good indication of the preformance of the participant.
   
 ## B_downs_filter_chaninfo_exclchan  
   
 To understand the data we first run it through the pipeline with some fairly strict filtering. This is done to get some idea of the paradigm.  
 In this script we are downfiltering to 256hz to keep the data manageable in size and for optimizing the ICA.  
-We filter using a 1hz highpass filter and a 50hz lowpass filter.
-We add channel info and use the pop_clean_rawdata function to delete bad channels (using the functions standard setting).
+We filter using a 1hz highpass filter and a 200hz lowpass filter. These can be changed in line 16 to 18. 
+We add channel info and use the pop_clean_rawdata function to delete bad channels (using the functions standard setting).  
+**We did not use externals during the piloting part, we will during the collection of the rest of the data, you can and maybe should re-reference to externals** However, if you do so, you need to check FIRST that non of the channels are flat. If you fail to do this, the channels will have re-referenced data in them an thus not look flat. To use the current (better) cleaning function `pop_clean_rawdata` you need to delete externals. [However, EEGLAB is updating this, so you can select in the function to ignore these channels.](https://github.com/sccn/clean_rawdata/issues/28). Check if this works before, like that you can re-reference after this step. 
 
 ## C_manual_check  
   
@@ -40,71 +47,15 @@ Here we manually delete channels that still are too noisy
 ## D_reref_exclextrn_interp_avgref_ica_autoexcom  
   
 We interpolate the bad channels, re-reference to the average and do an ICA.
-We delete components if the eye components contain over 80% eye and less then 10% brain. 
+We delete components if the eye components contain over 80% eye and less then 10% brain. This can be changed in line 81 and 82. In line 81, you can add more types of noise components so that you delete them if they as a sum reach over 80%. Howerver this is not a conservative approach and not suggested by some senior lab members (Ana Francisco, Filip DeSanctis 2022).
+Whatever we delete and keep gets plotted and all figures are saved. 
   
-## E_epoching_IC 
+## E_epoching_bf
 
-We epoch the data -100 500 with a baseline from -50 to 0. After this we delete all the epochs that have 120uV. 
+We epoch the data -500 2000 with a baseline from -50 to 0. This is big because we want as much time as we can for the Frequency analysis. After this we delete all the epochs that have 120uV. We use the `binlist_bf.txt` that creates 2 types of epochs. 1 that has 0 at onset of the visual cue, the other that has 0 at the onset of the auditory cue. 
 This also will show us how many trials everyone has left. This should dictate how many trials you want to use for the next script.  
   
 ## F_all_analysis  
   
-We use 240 randomly selected trials for both the conditions. After that we do 3 main analysis 
+The previous script should create a variable that shows how many trials there are for each Bin (type of epoch). The lowest number can be used to make sure everyone has equal amount of trials. This can be changed in line 18. This will mean that for every participant that has more trials than the selected amount, a random sub-set will be chosen to work with from here.  
 
-### Frequency spectrum  
-  
-For this analysis we use matlab's pwelch function, slightly adapted by [Shlomit Beker](https://github.com/Shlomit-Beker).  
-We use all the standard settings except that we set the sampling rate to that of the data (256) and we only go up to 50hz. After that we plot a logtransfomation of the data.
-  
-### Time Frequency
-  
-For this we use [EEGlabs newtimef function](https://github.com/sccn/eeglab/blob/develop/functions/timefreqfunc/newtimef.m). We run this on concatenated data (all the trials of e). We use the following settings that are different from the default settings:  
-frames: amount of data points for an epoch (EEG.points)  
-epoch time: the full epoch as we define it in E_epoching_ASSR (-100 to 500) ([EEG.xmin EEG.xmax]*1000 )  
-sampling rate: 512 (EEG.srate)  
-cycles= FFT instead (0)  
-frequencies: 1-50hz (time_freq_frequencies_range)  
-alpha: 0.05  
-commonbase: on
-mcorrect: using FDR to correct for multiple comparisons
-pcontour: off ,puts a contour around the plot for what is significant  
-
-We plot the conditions by themselves and we compare the condtions, but for this second part it is not possible to correct for multiple comparisons. 
-
-### ERP  
-  
-We use the EEGLAB study to plot averages, of all the conditions for multiple channels.   
-
-## Results  
-  
-We are expecting a difference in alpha and theta. We are also expecting a more positive P1 amplitude to faces compared to objects, and a difference in P1 between faces (that should not be there when we have an ASD group). We also expect the N170 to be more negative in amplitude and faster in latency for Faces vs objects and also to be more negative and slower between for inverted faces compared to upright faces.
-
-### ERPs  
-  
-![ERPs](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERPs_fast.jpg)  
-  
-### Power spectrum
-  
-![Power spectrum](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/Pwelch_fast.png)  
-  
-### Time Frequency  
-  
-In this case we can only correct for multiple comparisons when plotting one condition. So the first 4 plots have the correction. The last 2, comparing conditions, do not.  
-  
-![Face normal](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_nrm_oz.png)  
-  
-![Face up-side-down](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_upsdwn_oz.png)  
-  
-![Object normal](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_nrm_oz.png)  
-  
-![Object up-side-down](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_upsdwn_oz.png)  
-  
-![Comparing faces](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_oz.png)  
-  
-![Comparing objects](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_obj_oz.png)  
-  
-![Comparing face vs objects (both right-side-up)](https://github.com/CognitiveNeuroLab/sfari-analysis-pipelines/blob/main/images/ERSP_face_obj_oz.png)
-
-
-  
-  
