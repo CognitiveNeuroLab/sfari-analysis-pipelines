@@ -30,8 +30,8 @@ This script simply takes the .bdf files and creates .set files (EEGlab structure
   
 To understand the data we first run it through the pipeline with some fairly strict filtering. This is done to get some idea of the paradigm.  
 In this script we are downfiltering to 256hz to keep the data manageable in size and for optimizing the ICA.  
-We filter using a 1hz highpass filter and a 50hz lowpass filter.
-We add channel info and use the pop_clean_rawdata function to delete bad channels (using the functions standard setting).
+We filter using a 1hz highpass filter and a 50hz lowpass filter, if we want to look at ERPs.
+We add channel info and use the pop_clean_rawdata function to delete bad channels, and optionally also delete noisy moments in the data (using mostly the functions standard setting). It's worth it to note that noisy epochs will get deleted later in the script, so depending on the level of noise in the data it might be worth it not to use the extra cleaning.
 
 ## C_manual_check  
   
