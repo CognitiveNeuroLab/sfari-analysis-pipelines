@@ -11,13 +11,13 @@ eeglab
 % This defines the set of subjects
 subject_list = {'12377' '12494' '12565' '12666' '12675'};
 % Path to the parent folder, which contains the data folders for all subjects
-home_path  = 'D:\ASSR_oddball\';
-study_save = 'D:\ASSR_oddball\study\';
+home_path  = 'G:\ASSR_oddball\';
+study_save = 'G:\ASSR_oddball\study\';
 %21 = 27hz std 22=27hz dev 11=40std 12 40hz dev
 power_grouped = table2array(array2table(zeros(2,length(subject_list))));
-trials_num_reduced=270;
+trials_num_reduced=265;
 max_pwelch_freq=50; %max freq plotted by Pwelch function
-time_freq_frequencies_range = [1 60];%high and low freq for time/freq analysis
+time_freq_frequencies_range = [20 60];%high and low freq for time/freq analysis
 power_40=[];power_27=[];
 concat_40 = [];concat_27 = [];
 highpass_filter_27hz=22;
@@ -55,12 +55,20 @@ for s=1:length(subject_list)
     Fs   = EEG_27_std.srate; % sampling rate, amount of samples per unit time
     %     NFFT = EEG_27_std.pnts^2; %Number of DFT points, specified as a positive integer. For a real-valued input signal, x, the PSD estimate, pxx has length (nfft/2 + 1) if nfft is even, and (nfft + 1)/2 if nfft is odd. For a complex-valued input signal,x, the PSD estimate always has length nfft. If nfft is specified as empty, the default nfft is used. If nfft is greater than the segment length, the data is zero-padded. If nfft is less than the segment length, the segment is wrapped using datawrap to make the length equal to nfft.
     %     SPECTRUMTYPE = [];
-    [power_40_std(:,:),f] = plotPwelch(EEG_40_std.data(48,pwelch_epoch_start:pwelch_epoch_end,:),[],[],max_pwelch_freq,Fs);
-    [power_27_std(:,:),f] = plotPwelch(EEG_27_std.data(48,pwelch_epoch_start:pwelch_epoch_end,:),[],[],max_pwelch_freq,Fs);
-    power_40_log_all(:,:,s)=10*log10(power_40_std);
-    power_27_log_all(:,:,s)=10*log10(power_27_std);
-    concat_40 = cat(3, concat_40, EEG_40_std.data);%data for newtimef function (time freq)
-    concat_27 = cat(3, concat_27, EEG_27_std.data); %data for newtimef function (time freq)
+    %[power_40_std(:,:),f] = plotPwelch(EEG_40_std.data(48,pwelch_epoch_start:pwelch_epoch_end,:),[],[],max_pwelch_freq,Fs);
+    %[power_27_std(:,:),f] = plotPwelch(EEG_27_std.data(48,pwelch_epoch_start:pwelch_epoch_end,:),[],[],max_pwelch_freq,Fs);
+    %power_40_log_all(:,:,s)=10*log10(power_40_std);
+    %power_27_log_all(:,:,s)=10*log10(power_27_std);
+   % if i==1 %only need to do this 1x for each participant
+        concat_40 = cat(3, concat_40, EEG_40_std.data);%data for newtimef function (time freq)
+        concat_27 = cat(3, concat_27, EEG_27_std.data); %data for newtimef function (time freq)
+        %         data{s}.data_40=EEG_40_std.data;
+        %         data{s}.data_27=EEG_27_std.data;
+        %         data{s}.id=subject_list{s};
+        %         data{s}.fs=EEG.srate;
+        %         data{s}.times=EEG.times;
+        %         data{s}.chan=EEG.chanlocs;
+%    end
 end
 
 %% averaging the log of the power, so we can plot it
@@ -83,18 +91,37 @@ set(gca,'fontsize', 16);
 
 print([home_path 'Pwelch_cz'], '-dpng' ,'-r300');
 close all
+%% tf
+figure; [ersp,itc,powbaseCommon,times,freqs,erspboot,itcboot, tfdata] =newtimef( EEG, 1, 47, [-352  945], [3  13] , 'topovec', 47, 'elocs', EEG.chanlocs, 'chaninfo', EEG.chaninfo, 'caption', 'FCz', 'baseline',[0], 'freqs', [20 60], 'plotphase', 'off', 'padratio', 1);
+
+figure();[ersp,itc,powbaseCommon,times,freqs,erspboot,itcboot, tfdata] =  newtimef(EEG.data(48,:,:) ,...
+    EEG.pnts,...%frames (uses the total amount of sample points in the data
+    [EEG.xmin EEG.xmax]*1000,... %using the epoch times of the data *1000 to go from s to ms
+    EEG.srate,... %finds the sampling rate in the data
+    'cycles', [3 13],... % if 0,use FFTs and Hanning window tapering see "varwin" in the newtimef help file
+    'freqs', time_freq_frequencies_range,...
+    'alpha', 0.05,...%If non-0, compute two-tailed permutation significance probability level. Show non-signif. output values as green.                            {default: 0}
+    'commonbase', 'on',... %this is default, not sure how/why to set the baseline
+    'mcorrect', 'fdr',... %correcting for multiple comparisons
+    'pcontour', 'off',... % puts a contour around the plot for what is significant
+    'ntimesout', 400,... % amount of datapoints 
+    'title', 'Cz');%
+
+print([home_path 'ERSP_40hz_cz'], '-dpng' ,'-r300');
+close all
+
 %% time frequency analysis
 figure();[ersp,itc,powbaseCommon,times,freqs,erspboot,itcboot, tfdata] =  newtimef(concat_40(48,:,:) ,...
     EEG_40_std.pnts,...%frames (uses the total amount of sample points in the data
     [EEG_40_std.xmin EEG_40_std.xmax]*1000,... %using the epoch times of the data *1000 to go from s to ms
     EEG_40_std.srate,... %finds the sampling rate in the data
-    0,... % if 0,use FFTs and Hanning window tapering see "varwin" in the newtimef help file
+    'cycles', [3 0.5],... % if 0,use FFTs and Hanning window tapering see "varwin" in the newtimef help file
     'freqs', time_freq_frequencies_range,...
     'alpha', 0.05,...%If non-0, compute two-tailed permutation significance probability level. Show non-signif. output values as green.                            {default: 0}
     'commonbase', 'on',... %this is default, not sure how/why to set the baseline
     'mcorrect', 'fdr',... %correcting for multiple comparisons
-    'pcontour', 'on',... % puts a contour around the plot for what is significant
-    'title', '100 trials 40hz Cz');%
+    'pcontour', 'off',... % puts a contour around the plot for what is significant
+    'title', 'Wavelet 3 1');%
 
 print([home_path 'ERSP_40hz_cz'], '-dpng' ,'-r300');
 close all
